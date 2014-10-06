@@ -1,12 +1,18 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
+        <loc>
+            http://wzr.github.io/blog/2014/10/06/compiling-ssdeep-and-pydeep-on-mac-os-x-10-dot-9-plus/
+        </loc>
+        <lastmod>2014-10-07T00:42:38+02:00</lastmod>
+    </url>
+    <url>
         <loc>http://wzr.github.io/blog/archives/</loc>
-        <lastmod>2014-02-03T00:11:11+01:00</lastmod>
+        <lastmod>2014-10-07T00:42:38+02:00</lastmod>
     </url>
     <url>
         <loc>http://wzr.github.io/</loc>
-        <lastmod>2014-02-03T00:11:11+01:00</lastmod>
+        <lastmod>2014-10-07T00:42:38+02:00</lastmod>
     </url>
     <url>
         <loc>http://wzr.github.io/robots.txt</loc>

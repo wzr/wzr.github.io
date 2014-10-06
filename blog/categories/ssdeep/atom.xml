@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ssdeep | Half a nop]]></title>
+  <link href="http://wzr.github.io/blog/categories/ssdeep/atom.xml" rel="self"/>
+  <link href="http://wzr.github.io/"/>
+  <updated>2014-10-07T00:42:39+02:00</updated>
+  <id>http://wzr.github.io/</id>
+  <author>
+    <name><![CDATA[wzr]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Compiling ssdeep and pydeep on Mac OS X 10.9+]]></title>
+    <link href="http://wzr.github.io/blog/2014/10/06/compiling-ssdeep-and-pydeep-on-mac-os-x-10-dot-9-plus/"/>
+    <updated>2014-10-06T23:45:47+02:00</updated>
+    <id>http://wzr.github.io/blog/2014/10/06/compiling-ssdeep-and-pydeep-on-mac-os-x-10-dot-9-plus</id>
+    <content type="html"><![CDATA[<p>I decided to finally give a try to a couple neat projects, first one is a modification of VXCage by mboman (originally by @botherder), second one was viper itself.</p>
+
+<p>It got a tidbit complicated installing pydeep, a dependency for both projects. Googling around did not help much.</p>
+
+<p>I like to keep my things tidy, for this I use a mix of brew, virtualenv and other tricks in order to keep python modules and other libs/software as isolated as possible.</p>
+
+<!-- more -->
+
+
+<p>First things first, If you just try to brew install ssdeep from brew, it will fetch an old version, you can fix the formula yourself:</p>
+
+<p>```
+$ cat &lt;&lt;&lsquo;EOF&rsquo; >/usr/local/Library/Formula/ssdeep.rb
+require &ldquo;formula&rdquo;</p>
+
+<p>class Ssdeep &lt; Formula
+  homepage &ldquo;<a href="http://ssdeep.sourceforge.net/">http://ssdeep.sourceforge.net/</a>&rdquo;
+  url &ldquo;<a href="https://downloads.sourceforge.net/project/ssdeep/ssdeep-2.11.1/ssdeep-2.11.1.tar.gz">https://downloads.sourceforge.net/project/ssdeep/ssdeep-2.11.1/ssdeep-2.11.1.tar.gz</a>&rdquo;
+  sha256 &ldquo;a632ac30fca29ad5627e1bf5fae05d9a8873e6606314922479259531e0c19608&rdquo;</p>
+
+<p>  def install</p>
+
+<pre><code>system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+system "make install"
+</code></pre>
+
+<p>  end
+end
+EOF</p>
+
+<p>$ brew install ssdeep
+==> Downloading <a href="https://downloads.sourceforge.net/project/ssdeep/ssdeep-2.11.1/ssdeep-2.11.1.tar.gz">https://downloads.sourceforge.net/project/ssdeep/ssdeep-2.11.1/ssdeep-2.11.1.tar.gz</a>
+Already downloaded: /Library/Caches/Homebrew/ssdeep-2.11.1.tar.gz
+==> ./configure &mdash;prefix=/usr/local/Cellar/ssdeep/2.11.1
+==> make install
+  /usr/local/Cellar/ssdeep/2.11.1: 12 files, 168K, built in 11 seconds
+```</p>
+
+<p>Then if you just:</p>
+
+<p><code>
+$ workon viper # note, for this to work, you need a virtualenv named viper ;)
+(viper)$ pip install pydeep
+</code></p>
+
+<p>you will be greeted with something along these lines:</p>
+
+<p>```
+Downloading/unpacking pydeep
+Downloading pydeep-0.2.tar.gz
+Running setup.py egg_info for package pydeep</p>
+
+<p>Installing collected packages: pydeep
+  Running setup.py install for pydeep</p>
+
+<pre><code>building 'pydeep' extension
+cc -fno-strict-aliasing -fno-common -dynamic -arch x86_64 -arch i386 -g -Os -pipe -fno-common -fno-strict-aliasing -fwrapv -DENABLE_DTRACE -DMACOSX -DNDEBUG -Wall -Wstrict-prototypes -Wshorten-64-to-32 -DNDEBUG -g -fwrapv -Os -Wall -Wstrict-prototypes -DENABLE_DTRACE -arch x86_64 -arch i386 -pipe -I/System/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7 -c pydeep.c -o build/temp.macosx-10.9-intel-2.7/pydeep.o
+pydeep.c:2:10: fatal error: 'fuzzy.h' file not found
+#include &lt;fuzzy.h&gt;
+         ^
+1 error generated.
+error: command 'cc' failed with exit status 1
+Complete output from command /Users/wzr/.envs/viper/bin/python -c "import setuptools;__file__='/Users/wzr/.envs/viper/build/pydeep/setup.py';exec(compile(open(__file__).read().replace('\r\n', '\n'), __file__, 'exec'))" install --record /var/folders/t6/l7f8_fz50dj2lt_r5z4wkhbh0000gn/T/pip-UF4gSb-record/install-record.txt --single-version-externally-managed --install-headers /Users/wzr/.envs/viper/include/site/python2.7:
+running install
+</code></pre>
+
+<p>running build</p>
+
+<p>running build_ext</p>
+
+<p>building &lsquo;pydeep&rsquo; extension</p>
+
+<p>creating build</p>
+
+<p>creating build/temp.macosx-10.9-intel-2.7</p>
+
+<p>cc -fno-strict-aliasing -fno-common -dynamic -arch x86_64 -arch i386 -g -Os -pipe -fno-common -fno-strict-aliasing -fwrapv -DENABLE_DTRACE -DMACOSX -DNDEBUG -Wall -Wstrict-prototypes -Wshorten-64-to-32 -DNDEBUG -g -fwrapv -Os -Wall -Wstrict-prototypes -DENABLE_DTRACE -arch x86_64 -arch i386 -pipe -I/System/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7 -c pydeep.c -o build/temp.macosx-10.9-intel-2.7/pydeep.o</p>
+
+<p>pydeep.c:2:10: fatal error: &lsquo;fuzzy.h&rsquo; file not found</p>
+
+<h1>include &lt;fuzzy.h></h1>
+
+<pre><code>     ^
+</code></pre>
+
+<p>1 error generated.</p>
+
+<p>error: command &lsquo;cc&rsquo; failed with exit status 1</p>
+
+<hr />
+
+<p>Command /Users/wzr/.envs/viper/bin/python -c &ldquo;import setuptools;<strong>file</strong>=&lsquo;/Users/wzr/.envs/viper/build/pydeep/setup.py&rsquo;;exec(compile(open(<strong>file</strong>).read().replace(&lsquo;\r\n&rsquo;, &lsquo;\n&rsquo;), <strong>file</strong>, &lsquo;exec&rsquo;))&rdquo; install &mdash;record /var/folders/t6/l7f8_fz50dj2lt_r5z4wkhbh0000gn/T/pip-UF4gSb-record/install-record.txt &mdash;single-version-externally-managed &mdash;install-headers /Users/wzr/.envs/viper/include/site/python2.7 failed with error code 1 in /Users/wzr/.envs/viper/build/pydeep
+Storing complete log in /Users/wzr/.pip/pip.log
+```</p>
+
+<p>Well, that isn&rsquo;t quite working. Fear not, the compiler just doesn&rsquo;t know where to find the includes and libs for building the pydeep bindings.
+This should fix it:</p>
+
+<p>```
+(viper)$ export LDFLAGS=&ldquo;-L/usr/local/lib&rdquo;
+(viper)$ export C_INCLUDE_PATH=/usr/local/include
+(viper)$ pip install pydeep
+Downloading/unpacking pydeep
+  Running setup.py egg_info for package pydeep</p>
+
+<p>Installing collected packages: pydeep
+  Running setup.py install for pydeep</p>
+
+<p>Successfully installed pydeep
+Cleaning up&hellip;
+```</p>
+]]></content>
+  </entry>
+  
+</feed>
